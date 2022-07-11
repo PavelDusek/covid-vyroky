@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Výroky o covid-19 v kontextu dat.</title>
+		<style>
+			.hospitalizace {
+				stroke: steelblue;
+				fill: none;
+				stroke-width: 1.5;
+			}
+			.tezky_stav {
+				stroke: orange;
+				fill: none;
+				stroke-width: 1.5;
+			}
+		</style>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script language="javascript">
+			function drawChart() {
+				const data = [
+					{% for day in data %}
+					{ "datum": "{{day.datum}}", "pocet_hosp": "{{day.pocet_hosp}}", "stav_tezky": "{{day.stav_tezky}}" },
+					{% endfor %}
+				];
+				var margin = {top: 10, right: 30, bottom: 50, left: 60},
+				    width  = 5000 - margin.left - margin.right,
+				    height = 1000 - margin.top  - margin.bottom;
+
+				var svg = d3.select("#vyroky_plot")
+					.append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					.attr("transform", "translate( " + margin.left + "," + margin.top + ")");
+					var datum = data.map( function(d) { return d.datum; } );
+					var hosp  = data.map( function(d) { return d.pocet_hosp; } );
+					var tezky = data.map( function(d) { return d.stavy_tezky; } );
+
+				var xScale  = d3.scaleBand().range([0, width]).padding(0.4),
+				    yScale  = d3.scaleLinear().range([height, 0]);
+
+				xScale.domain( data.map( function(d) { return d.datum; } ) );
+				yScale.domain( [0, d3.max( hosp )]);
+
+				//x Axis
+				svg.append("g")
+				  .attr("class", "xaxis")
+				  .attr( "transform", "translate(0, " + height + ")" )
+				  .call( d3.axisBottom(xScale) )
+				  .selectAll("text")
+				  .style("text-anchor", "end")
+				  .attr("dx", "-.8em")
+				  .attr("dy", ".15em")
+				  .attr("transform", "rotate(-30)");
+
+				//y Axis
+				svg.append("g")
+				  .attr("class", "yaxis")
+				  .call(d3.axisLeft(yScale).tickFormat( d => d ).ticks(15));
+
+				//draw hospitalizace 
+				svg.append("path")
+				  .data(data)
+				  .attr("class", "hospitalizace")
+				  .attr("d", d3.line()
+					  .x(function(d) {return xScale(d.datum) })
+					  .y(function(d) {return yScale(d.pocet_hosp) })( data )
+				  );
+
+				//draw tezky_stav
+				svg.append("path")
+				  .data(data)
+				  .attr("class", "tezky_stav")
+				  .attr("d", d3.line()
+					  .x(function(d) {return xScale(d.datum) })
+					  .y(function(d) {return yScale(d.stav_tezky) })( data )
+				  );
+
+			}
+			window.onload = function(e) { drawChart(); };
+		</script>
+	</head>
+	<body>
+		<div id="vyroky_plot"></div>
+		<hr />
+		{% for vyrok in vyroky %}
+			<div class="{{vyrok.class}}">
+				<p>{{vyrok.datum}}</p>
+				<p>{{vyrok.vyrok}}</p>
+				<p>{{vyrok.autor}}</p>
+			</div>
+			<hr />
+		{% endfor %}
+	</body>
+</html>
