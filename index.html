@@ -4,571 +4,117 @@
 		<meta charset="utf-8">
 		<title>Výroky o covid-19 v kontextu dat.</title>
 		<style>
+			span.pirk { background: cornflowerblue; }
 			.pirk rect { fill: none; stroke-width:2; stroke: red; }
 			.pirk text { fill: red; }
 
+			span.pekova { background: blue; }
 			.pekova rect {fill: none; stroke-width:2; stroke: red;}
 			.pekova text { fill: red; }
 
+			span.klicperova { background: coral; }
 			.klicperova rect {fill: none; stroke-width:2; stroke: red;}
 			.klicperova text { fill: red; }
 
+			span.zaloudik { background: salmon; }
 			.zaloudik rect {fill: none; stroke-width:2; stroke: red;}
 			.zaloudik text { fill: red; }
 
+			span.ludvik { background: lightgray; }
 			.ludvik rect {fill: none; stroke-width:2; stroke: red;}
 			.ludvik text { fill: red; }
 
+			span.hagen { background: orchid; }
 			.hagen rect {fill: none; stroke-width:2; stroke: red;}
 			.hagen text { fill: red; }
 
+			span.hnizdil { background: plum; }
 			.hnizdil rect {fill: none; stroke-width:2; stroke: red;}
 			.hnizdil text { fill: red; }
 
+			span.smucler { background: springgreen; }
 			.smucler rect {fill: none; stroke-width:2; stroke: red;}
 			.smucler text { fill: red; }
 
+			span.pecinka { background: peachpuff; }
 			.pecinka rect {fill: none; stroke-width:2; stroke: red;}
 			.pecinka text { fill: red; }
 
+			span.dusek { background: tomato; }
 			.dusek rect {fill: none; stroke-width:2; stroke: red;}
 			.dusek text { fill: red; }
 
+			span.votruba { background: turquoise; }
 			.votruba rect {fill: none; stroke-width:2; stroke: red;}
 			.votruba text { fill: red; }
 
+			span.pollert{ background: wheat; }
 			.pollert rect {fill: none; stroke-width:2; stroke: red;}
 			.pollert text { fill: red; }
 
+			span.bila { background: seashell; }
 			.bila rect {fill: none; stroke-width:2; stroke: red;}
 			.bila text { fill: red; }
 
+			span.fiala { background: slateblue; }
 			.fiala rect {fill: none; stroke-width:2; stroke: red;}
 			.fiala text { fill: red; }
 
+			span.babis { background: gold; }
 			.babis rect {fill: none; stroke-width:2; stroke: red;}
 			.babis text { fill: red; }
 
+			span.balik { background: olive; }
 			.balik rect {fill: none; stroke-width:2; stroke: red;}
 			.balik text { fill: red; }
 
+			span.feltl { background: indianred; }
 			.feltl rect {fill: none; stroke-width:2; stroke: red;}
 			.feltl text { fill: red; }
 
+			span.klaus { background: dodgerblue; }
 			.klaus rect {fill: none; stroke-width:2; stroke: red;}
 			.klaus text { fill: red; }
 
+			span.csakova { background: lightgray; }
 			.csakova {fill: none; stroke-width:2; stroke: red;}
 			.csakova text { fill: red; }
 
 			.hospitalizace { stroke: steelblue; fill: none; stroke-width: 3; }
 			.tezky_stav { stroke: orange; fill: none; stroke-width: 3; }
+
+			body { text-align: center; margin: auto; }
+
+			.authors { display: flex; flex-wrap: wrap; background: beige; }
+			.authors span { margin: 5px; padding: 2px; border-radius: 5px; border: solid 2px gray; cursor: pointer; }
+			span.selected { border: solid 2px darkred; }
 		</style>
 		<script src="https://d3js.org/d3.v5.min.js"></script>
 		<script language="javascript">
 			function drawChart() {
 				const data = [
-					
-					{ "datum": "10.03.2020", "pocet_hosp": "0.0", "stav_tezky": "0.0" },
-					
-					{ "datum": "11.03.2020", "pocet_hosp": "2.0", "stav_tezky": "0.0" },
-					
-					{ "datum": "12.03.2020", "pocet_hosp": "3.0", "stav_tezky": "0.0" },
-					
-					{ "datum": "13.03.2020", "pocet_hosp": "4.0", "stav_tezky": "0.0" },
-					
-					{ "datum": "14.03.2020", "pocet_hosp": "4.0", "stav_tezky": "0.0" },
-					
-					{ "datum": "15.03.2020", "pocet_hosp": "6.0", "stav_tezky": "0.0" },
-					
-					{ "datum": "16.03.2020", "pocet_hosp": "19.0", "stav_tezky": "2.0" },
-					
-					{ "datum": "17.03.2020", "pocet_hosp": "49.0", "stav_tezky": "5.0" },
-					
-					{ "datum": "18.03.2020", "pocet_hosp": "50.0", "stav_tezky": "6.0" },
-					
-					{ "datum": "19.03.2020", "pocet_hosp": "55.0", "stav_tezky": "6.0" },
-					
-					{ "datum": "20.03.2020", "pocet_hosp": "66.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "21.03.2020", "pocet_hosp": "79.0", "stav_tezky": "14.0" },
-					
-					{ "datum": "22.03.2020", "pocet_hosp": "97.0", "stav_tezky": "16.0" },
-					
-					{ "datum": "23.03.2020", "pocet_hosp": "117.0", "stav_tezky": "22.0" },
-					
-					{ "datum": "24.03.2020", "pocet_hosp": "135.0", "stav_tezky": "26.0" },
-					
-					{ "datum": "25.03.2020", "pocet_hosp": "175.0", "stav_tezky": "35.0" },
-					
-					{ "datum": "26.03.2020", "pocet_hosp": "205.0", "stav_tezky": "37.0" },
-					
-					{ "datum": "27.03.2020", "pocet_hosp": "237.0", "stav_tezky": "47.0" },
-					
-					{ "datum": "28.03.2020", "pocet_hosp": "271.0", "stav_tezky": "56.0" },
-					
-					{ "datum": "29.03.2020", "pocet_hosp": "282.0", "stav_tezky": "53.0" },
-					
-					{ "datum": "30.03.2020", "pocet_hosp": "294.0", "stav_tezky": "66.0" },
-					
-					{ "datum": "31.03.2020", "pocet_hosp": "322.0", "stav_tezky": "72.0" },
-					
-					{ "datum": "01.04.2020", "pocet_hosp": "345.0", "stav_tezky": "74.0" },
-					
-					{ "datum": "02.04.2020", "pocet_hosp": "351.0", "stav_tezky": "76.0" },
-					
-					{ "datum": "03.04.2020", "pocet_hosp": "375.0", "stav_tezky": "86.0" },
-					
-					{ "datum": "04.04.2020", "pocet_hosp": "365.0", "stav_tezky": "84.0" },
-					
-					{ "datum": "05.04.2020", "pocet_hosp": "371.0", "stav_tezky": "82.0" },
-					
-					{ "datum": "06.04.2020", "pocet_hosp": "395.0", "stav_tezky": "87.0" },
-					
-					{ "datum": "07.04.2020", "pocet_hosp": "413.0", "stav_tezky": "100.0" },
-					
-					{ "datum": "08.04.2020", "pocet_hosp": "423.0", "stav_tezky": "94.0" },
-					
-					{ "datum": "09.04.2020", "pocet_hosp": "417.0", "stav_tezky": "96.0" },
-					
-					{ "datum": "10.04.2020", "pocet_hosp": "406.0", "stav_tezky": "89.0" },
-					
-					{ "datum": "11.04.2020", "pocet_hosp": "406.0", "stav_tezky": "87.0" },
-					
-					{ "datum": "12.04.2020", "pocet_hosp": "402.0", "stav_tezky": "100.0" },
-					
-					{ "datum": "13.04.2020", "pocet_hosp": "395.0", "stav_tezky": "93.0" },
-					
-					{ "datum": "14.04.2020", "pocet_hosp": "385.0", "stav_tezky": "83.0" },
-					
-					{ "datum": "15.04.2020", "pocet_hosp": "370.0", "stav_tezky": "76.0" },
-					
-					{ "datum": "16.04.2020", "pocet_hosp": "362.0", "stav_tezky": "83.0" },
-					
-					{ "datum": "17.04.2020", "pocet_hosp": "355.0", "stav_tezky": "80.0" },
-					
-					{ "datum": "18.04.2020", "pocet_hosp": "338.0", "stav_tezky": "74.0" },
-					
-					{ "datum": "19.04.2020", "pocet_hosp": "345.0", "stav_tezky": "79.0" },
-					
-					{ "datum": "20.04.2020", "pocet_hosp": "348.0", "stav_tezky": "76.0" },
-					
-					{ "datum": "21.04.2020", "pocet_hosp": "365.0", "stav_tezky": "78.0" },
-					
-					{ "datum": "22.04.2020", "pocet_hosp": "342.0", "stav_tezky": "74.0" },
-					
-					{ "datum": "23.04.2020", "pocet_hosp": "335.0", "stav_tezky": "78.0" },
-					
-					{ "datum": "24.04.2020", "pocet_hosp": "329.0", "stav_tezky": "75.0" },
-					
-					{ "datum": "25.04.2020", "pocet_hosp": "314.0", "stav_tezky": "71.0" },
-					
-					{ "datum": "26.04.2020", "pocet_hosp": "310.0", "stav_tezky": "72.0" },
-					
-					{ "datum": "27.04.2020", "pocet_hosp": "309.0", "stav_tezky": "68.0" },
-					
-					{ "datum": "28.04.2020", "pocet_hosp": "305.0", "stav_tezky": "68.0" },
-					
-					{ "datum": "29.04.2020", "pocet_hosp": "286.0", "stav_tezky": "62.0" },
-					
-					{ "datum": "30.04.2020", "pocet_hosp": "273.0", "stav_tezky": "58.0" },
-					
-					{ "datum": "01.05.2020", "pocet_hosp": "244.0", "stav_tezky": "53.0" },
-					
-					{ "datum": "02.05.2020", "pocet_hosp": "233.0", "stav_tezky": "49.0" },
-					
-					{ "datum": "03.05.2020", "pocet_hosp": "232.0", "stav_tezky": "49.0" },
-					
-					{ "datum": "04.05.2020", "pocet_hosp": "236.0", "stav_tezky": "54.0" },
-					
-					{ "datum": "05.05.2020", "pocet_hosp": "223.0", "stav_tezky": "46.0" },
-					
-					{ "datum": "06.05.2020", "pocet_hosp": "209.0", "stav_tezky": "43.0" },
-					
-					{ "datum": "07.05.2020", "pocet_hosp": "191.0", "stav_tezky": "41.0" },
-					
-					{ "datum": "08.05.2020", "pocet_hosp": "185.0", "stav_tezky": "43.0" },
-					
-					{ "datum": "09.05.2020", "pocet_hosp": "173.0", "stav_tezky": "39.0" },
-					
-					{ "datum": "10.05.2020", "pocet_hosp": "167.0", "stav_tezky": "39.0" },
-					
-					{ "datum": "11.05.2020", "pocet_hosp": "167.0", "stav_tezky": "42.0" },
-					
-					{ "datum": "12.05.2020", "pocet_hosp": "157.0", "stav_tezky": "40.0" },
-					
-					{ "datum": "13.05.2020", "pocet_hosp": "147.0", "stav_tezky": "38.0" },
-					
-					{ "datum": "14.05.2020", "pocet_hosp": "128.0", "stav_tezky": "34.0" },
-					
-					{ "datum": "15.05.2020", "pocet_hosp": "118.0", "stav_tezky": "34.0" },
-					
-					{ "datum": "16.05.2020", "pocet_hosp": "112.0", "stav_tezky": "33.0" },
-					
-					{ "datum": "17.05.2020", "pocet_hosp": "110.0", "stav_tezky": "34.0" },
-					
-					{ "datum": "18.05.2020", "pocet_hosp": "115.0", "stav_tezky": "32.0" },
-					
-					{ "datum": "19.05.2020", "pocet_hosp": "109.0", "stav_tezky": "31.0" },
-					
-					{ "datum": "20.05.2020", "pocet_hosp": "101.0", "stav_tezky": "31.0" },
-					
-					{ "datum": "21.05.2020", "pocet_hosp": "101.0", "stav_tezky": "29.0" },
-					
-					{ "datum": "22.05.2020", "pocet_hosp": "98.0", "stav_tezky": "24.0" },
-					
-					{ "datum": "23.05.2020", "pocet_hosp": "93.0", "stav_tezky": "22.0" },
-					
-					{ "datum": "24.05.2020", "pocet_hosp": "94.0", "stav_tezky": "21.0" },
-					
-					{ "datum": "25.05.2020", "pocet_hosp": "91.0", "stav_tezky": "19.0" },
-					
-					{ "datum": "26.05.2020", "pocet_hosp": "92.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "27.05.2020", "pocet_hosp": "86.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "28.05.2020", "pocet_hosp": "74.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "29.05.2020", "pocet_hosp": "71.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "30.05.2020", "pocet_hosp": "72.0", "stav_tezky": "12.0" },
-					
-					{ "datum": "31.05.2020", "pocet_hosp": "70.0", "stav_tezky": "12.0" },
-					
-					{ "datum": "01.06.2020", "pocet_hosp": "73.0", "stav_tezky": "13.0" },
-					
-					{ "datum": "02.06.2020", "pocet_hosp": "75.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "03.06.2020", "pocet_hosp": "65.0", "stav_tezky": "10.0" },
-					
-					{ "datum": "04.06.2020", "pocet_hosp": "60.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "05.06.2020", "pocet_hosp": "60.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "06.06.2020", "pocet_hosp": "59.0", "stav_tezky": "8.0" },
-					
-					{ "datum": "07.06.2020", "pocet_hosp": "61.0", "stav_tezky": "10.0" },
-					
-					{ "datum": "08.06.2020", "pocet_hosp": "60.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "09.06.2020", "pocet_hosp": "63.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "10.06.2020", "pocet_hosp": "66.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "11.06.2020", "pocet_hosp": "65.0", "stav_tezky": "12.0" },
-					
-					{ "datum": "12.06.2020", "pocet_hosp": "69.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "13.06.2020", "pocet_hosp": "67.0", "stav_tezky": "12.0" },
-					
-					{ "datum": "14.06.2020", "pocet_hosp": "68.0", "stav_tezky": "10.0" },
-					
-					{ "datum": "15.06.2020", "pocet_hosp": "77.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "16.06.2020", "pocet_hosp": "78.0", "stav_tezky": "8.0" },
-					
-					{ "datum": "17.06.2020", "pocet_hosp": "84.0", "stav_tezky": "7.0" },
-					
-					{ "datum": "18.06.2020", "pocet_hosp": "83.0", "stav_tezky": "10.0" },
-					
-					{ "datum": "19.06.2020", "pocet_hosp": "82.0", "stav_tezky": "8.0" },
-					
-					{ "datum": "20.06.2020", "pocet_hosp": "80.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "21.06.2020", "pocet_hosp": "74.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "22.06.2020", "pocet_hosp": "75.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "23.06.2020", "pocet_hosp": "77.0", "stav_tezky": "9.0" },
-					
-					{ "datum": "24.06.2020", "pocet_hosp": "78.0", "stav_tezky": "13.0" },
-					
-					{ "datum": "25.06.2020", "pocet_hosp": "67.0", "stav_tezky": "12.0" },
-					
-					{ "datum": "26.06.2020", "pocet_hosp": "64.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "27.06.2020", "pocet_hosp": "61.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "28.06.2020", "pocet_hosp": "66.0", "stav_tezky": "13.0" },
-					
-					{ "datum": "29.06.2020", "pocet_hosp": "69.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "30.06.2020", "pocet_hosp": "71.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "01.07.2020", "pocet_hosp": "75.0", "stav_tezky": "10.0" },
-					
-					{ "datum": "02.07.2020", "pocet_hosp": "72.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "03.07.2020", "pocet_hosp": "71.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "04.07.2020", "pocet_hosp": "70.0", "stav_tezky": "13.0" },
-					
-					{ "datum": "05.07.2020", "pocet_hosp": "73.0", "stav_tezky": "13.0" },
-					
-					{ "datum": "06.07.2020", "pocet_hosp": "69.0", "stav_tezky": "10.0" },
-					
-					{ "datum": "07.07.2020", "pocet_hosp": "77.0", "stav_tezky": "11.0" },
-					
-					{ "datum": "08.07.2020", "pocet_hosp": "85.0", "stav_tezky": "10.0" },
-					
-					{ "datum": "09.07.2020", "pocet_hosp": "73.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "10.07.2020", "pocet_hosp": "69.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "11.07.2020", "pocet_hosp": "64.0", "stav_tezky": "14.0" },
-					
-					{ "datum": "12.07.2020", "pocet_hosp": "65.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "13.07.2020", "pocet_hosp": "71.0", "stav_tezky": "19.0" },
-					
-					{ "datum": "14.07.2020", "pocet_hosp": "71.0", "stav_tezky": "17.0" },
-					
-					{ "datum": "15.07.2020", "pocet_hosp": "80.0", "stav_tezky": "17.0" },
-					
-					{ "datum": "16.07.2020", "pocet_hosp": "76.0", "stav_tezky": "21.0" },
-					
-					{ "datum": "17.07.2020", "pocet_hosp": "74.0", "stav_tezky": "20.0" },
-					
-					{ "datum": "18.07.2020", "pocet_hosp": "74.0", "stav_tezky": "19.0" },
-					
-					{ "datum": "19.07.2020", "pocet_hosp": "74.0", "stav_tezky": "19.0" },
-					
-					{ "datum": "20.07.2020", "pocet_hosp": "71.0", "stav_tezky": "18.0" },
-					
-					{ "datum": "21.07.2020", "pocet_hosp": "78.0", "stav_tezky": "22.0" },
-					
-					{ "datum": "22.07.2020", "pocet_hosp": "92.0", "stav_tezky": "21.0" },
-					
-					{ "datum": "23.07.2020", "pocet_hosp": "91.0", "stav_tezky": "20.0" },
-					
-					{ "datum": "24.07.2020", "pocet_hosp": "94.0", "stav_tezky": "16.0" },
-					
-					{ "datum": "25.07.2020", "pocet_hosp": "92.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "26.07.2020", "pocet_hosp": "91.0", "stav_tezky": "14.0" },
-					
-					{ "datum": "27.07.2020", "pocet_hosp": "109.0", "stav_tezky": "17.0" },
-					
-					{ "datum": "28.07.2020", "pocet_hosp": "114.0", "stav_tezky": "17.0" },
-					
-					{ "datum": "29.07.2020", "pocet_hosp": "116.0", "stav_tezky": "18.0" },
-					
-					{ "datum": "30.07.2020", "pocet_hosp": "117.0", "stav_tezky": "20.0" },
-					
-					{ "datum": "31.07.2020", "pocet_hosp": "114.0", "stav_tezky": "19.0" },
-					
-					{ "datum": "01.08.2020", "pocet_hosp": "116.0", "stav_tezky": "19.0" },
-					
-					{ "datum": "02.08.2020", "pocet_hosp": "109.0", "stav_tezky": "18.0" },
-					
-					{ "datum": "03.08.2020", "pocet_hosp": "113.0", "stav_tezky": "16.0" },
-					
-					{ "datum": "04.08.2020", "pocet_hosp": "115.0", "stav_tezky": "13.0" },
-					
-					{ "datum": "05.08.2020", "pocet_hosp": "110.0", "stav_tezky": "15.0" },
-					
-					{ "datum": "06.08.2020", "pocet_hosp": "105.0", "stav_tezky": "14.0" },
-					
-					{ "datum": "07.08.2020", "pocet_hosp": "106.0", "stav_tezky": "16.0" },
-					
-					{ "datum": "08.08.2020", "pocet_hosp": "104.0", "stav_tezky": "16.0" },
-					
-					{ "datum": "09.08.2020", "pocet_hosp": "107.0", "stav_tezky": "17.0" },
-					
-					{ "datum": "10.08.2020", "pocet_hosp": "113.0", "stav_tezky": "23.0" },
-					
-					{ "datum": "11.08.2020", "pocet_hosp": "110.0", "stav_tezky": "23.0" },
-					
-					{ "datum": "12.08.2020", "pocet_hosp": "101.0", "stav_tezky": "22.0" },
-					
-					{ "datum": "13.08.2020", "pocet_hosp": "106.0", "stav_tezky": "23.0" },
-					
-					{ "datum": "14.08.2020", "pocet_hosp": "113.0", "stav_tezky": "24.0" },
-					
-					{ "datum": "15.08.2020", "pocet_hosp": "103.0", "stav_tezky": "26.0" },
-					
-					{ "datum": "16.08.2020", "pocet_hosp": "101.0", "stav_tezky": "24.0" },
-					
-					{ "datum": "17.08.2020", "pocet_hosp": "113.0", "stav_tezky": "26.0" },
-					
-					{ "datum": "18.08.2020", "pocet_hosp": "103.0", "stav_tezky": "25.0" },
-					
-					{ "datum": "19.08.2020", "pocet_hosp": "108.0", "stav_tezky": "24.0" },
-					
-					{ "datum": "20.08.2020", "pocet_hosp": "116.0", "stav_tezky": "24.0" },
-					
-					{ "datum": "21.08.2020", "pocet_hosp": "119.0", "stav_tezky": "24.0" },
-					
-					{ "datum": "22.08.2020", "pocet_hosp": "124.0", "stav_tezky": "26.0" },
-					
-					{ "datum": "23.08.2020", "pocet_hosp": "128.0", "stav_tezky": "24.0" },
-					
-					{ "datum": "24.08.2020", "pocet_hosp": "129.0", "stav_tezky": "32.0" },
-					
-					{ "datum": "25.08.2020", "pocet_hosp": "131.0", "stav_tezky": "32.0" },
-					
-					{ "datum": "26.08.2020", "pocet_hosp": "136.0", "stav_tezky": "32.0" },
-					
-					{ "datum": "27.08.2020", "pocet_hosp": "147.0", "stav_tezky": "32.0" },
-					
-					{ "datum": "28.08.2020", "pocet_hosp": "156.0", "stav_tezky": "37.0" },
-					
-					{ "datum": "29.08.2020", "pocet_hosp": "155.0", "stav_tezky": "36.0" },
-					
-					{ "datum": "30.08.2020", "pocet_hosp": "154.0", "stav_tezky": "36.0" },
-					
-					{ "datum": "31.08.2020", "pocet_hosp": "171.0", "stav_tezky": "36.0" },
-					
-					{ "datum": "01.09.2020", "pocet_hosp": "178.0", "stav_tezky": "41.0" },
-					
-					{ "datum": "02.09.2020", "pocet_hosp": "180.0", "stav_tezky": "42.0" },
-					
-					{ "datum": "03.09.2020", "pocet_hosp": "195.0", "stav_tezky": "44.0" },
-					
-					{ "datum": "04.09.2020", "pocet_hosp": "207.0", "stav_tezky": "49.0" },
-					
-					{ "datum": "05.09.2020", "pocet_hosp": "209.0", "stav_tezky": "52.0" },
-					
-					{ "datum": "06.09.2020", "pocet_hosp": "220.0", "stav_tezky": "56.0" },
-					
-					{ "datum": "07.09.2020", "pocet_hosp": "256.0", "stav_tezky": "65.0" },
-					
-					{ "datum": "08.09.2020", "pocet_hosp": "253.0", "stav_tezky": "57.0" },
-					
-					{ "datum": "09.09.2020", "pocet_hosp": "266.0", "stav_tezky": "61.0" },
-					
-					{ "datum": "10.09.2020", "pocet_hosp": "272.0", "stav_tezky": "67.0" },
-					
-					{ "datum": "11.09.2020", "pocet_hosp": "310.0", "stav_tezky": "66.0" },
-					
-					{ "datum": "12.09.2020", "pocet_hosp": "283.0", "stav_tezky": "63.0" },
-					
-					{ "datum": "13.09.2020", "pocet_hosp": "305.0", "stav_tezky": "65.0" },
-					
-					{ "datum": "14.09.2020", "pocet_hosp": "339.0", "stav_tezky": "75.0" },
-					
-					{ "datum": "15.09.2020", "pocet_hosp": "369.0", "stav_tezky": "74.0" },
-					
-					{ "datum": "16.09.2020", "pocet_hosp": "399.0", "stav_tezky": "80.0" },
-					
-					{ "datum": "17.09.2020", "pocet_hosp": "495.0", "stav_tezky": "91.0" },
-					
-					{ "datum": "18.09.2020", "pocet_hosp": "525.0", "stav_tezky": "96.0" },
-					
-					{ "datum": "19.09.2020", "pocet_hosp": "508.0", "stav_tezky": "93.0" },
-					
-					{ "datum": "20.09.2020", "pocet_hosp": "532.0", "stav_tezky": "106.0" },
-					
-					{ "datum": "21.09.2020", "pocet_hosp": "613.0", "stav_tezky": "113.0" },
-					
-					{ "datum": "22.09.2020", "pocet_hosp": "637.0", "stav_tezky": "120.0" },
-					
-					{ "datum": "23.09.2020", "pocet_hosp": "710.0", "stav_tezky": "135.0" },
-					
-					{ "datum": "24.09.2020", "pocet_hosp": "768.0", "stav_tezky": "155.0" },
-					
-					{ "datum": "25.09.2020", "pocet_hosp": "825.0", "stav_tezky": "164.0" },
-					
-					{ "datum": "26.09.2020", "pocet_hosp": "797.0", "stav_tezky": "184.0" },
-					
-					{ "datum": "27.09.2020", "pocet_hosp": "823.0", "stav_tezky": "188.0" },
-					
-					{ "datum": "28.09.2020", "pocet_hosp": "845.0", "stav_tezky": "197.0" },
-					
-					{ "datum": "29.09.2020", "pocet_hosp": "998.0", "stav_tezky": "204.0" },
-					
-					{ "datum": "30.09.2020", "pocet_hosp": "1062.0", "stav_tezky": "196.0" },
-					
-					{ "datum": "01.10.2020", "pocet_hosp": "1164.0", "stav_tezky": "232.0" },
-					
-					{ "datum": "02.10.2020", "pocet_hosp": "1241.0", "stav_tezky": "244.0" },
-					
-					{ "datum": "03.10.2020", "pocet_hosp": "1209.0", "stav_tezky": "263.0" },
-					
-					{ "datum": "04.10.2020", "pocet_hosp": "1281.0", "stav_tezky": "265.0" },
-					
-					{ "datum": "05.10.2020", "pocet_hosp": "1488.0", "stav_tezky": "314.0" },
-					
-					{ "datum": "06.10.2020", "pocet_hosp": "1634.0", "stav_tezky": "331.0" },
-					
-					{ "datum": "07.10.2020", "pocet_hosp": "1786.0", "stav_tezky": "364.0" },
-					
-					{ "datum": "08.10.2020", "pocet_hosp": "1957.0", "stav_tezky": "405.0" },
-					
-					{ "datum": "09.10.2020", "pocet_hosp": "2149.0", "stav_tezky": "413.0" },
-					
-					{ "datum": "10.10.2020", "pocet_hosp": "2168.0", "stav_tezky": "437.0" },
-					
-					{ "datum": "11.10.2020", "pocet_hosp": "2220.0", "stav_tezky": "410.0" },
-					
-					{ "datum": "12.10.2020", "pocet_hosp": "2579.0", "stav_tezky": "468.0" },
-					
+					 { "datum": "10.03.2020", "pocet_hosp": "0.0", "stav_tezky": "0.0" },  { "datum": "11.03.2020", "pocet_hosp": "2.0", "stav_tezky": "0.0" },  { "datum": "12.03.2020", "pocet_hosp": "3.0", "stav_tezky": "0.0" },  { "datum": "13.03.2020", "pocet_hosp": "4.0", "stav_tezky": "0.0" },  { "datum": "14.03.2020", "pocet_hosp": "4.0", "stav_tezky": "0.0" },  { "datum": "15.03.2020", "pocet_hosp": "6.0", "stav_tezky": "0.0" },  { "datum": "16.03.2020", "pocet_hosp": "19.0", "stav_tezky": "2.0" },  { "datum": "17.03.2020", "pocet_hosp": "49.0", "stav_tezky": "5.0" },  { "datum": "18.03.2020", "pocet_hosp": "50.0", "stav_tezky": "6.0" },  { "datum": "19.03.2020", "pocet_hosp": "55.0", "stav_tezky": "6.0" },  { "datum": "20.03.2020", "pocet_hosp": "66.0", "stav_tezky": "15.0" },  { "datum": "21.03.2020", "pocet_hosp": "79.0", "stav_tezky": "14.0" },  { "datum": "22.03.2020", "pocet_hosp": "97.0", "stav_tezky": "16.0" },  { "datum": "23.03.2020", "pocet_hosp": "117.0", "stav_tezky": "22.0" },  { "datum": "24.03.2020", "pocet_hosp": "135.0", "stav_tezky": "26.0" },  { "datum": "25.03.2020", "pocet_hosp": "175.0", "stav_tezky": "35.0" },  { "datum": "26.03.2020", "pocet_hosp": "205.0", "stav_tezky": "37.0" },  { "datum": "27.03.2020", "pocet_hosp": "237.0", "stav_tezky": "47.0" },  { "datum": "28.03.2020", "pocet_hosp": "271.0", "stav_tezky": "56.0" },  { "datum": "29.03.2020", "pocet_hosp": "282.0", "stav_tezky": "53.0" },  { "datum": "30.03.2020", "pocet_hosp": "294.0", "stav_tezky": "66.0" },  { "datum": "31.03.2020", "pocet_hosp": "322.0", "stav_tezky": "72.0" },  { "datum": "01.04.2020", "pocet_hosp": "345.0", "stav_tezky": "74.0" },  { "datum": "02.04.2020", "pocet_hosp": "351.0", "stav_tezky": "76.0" },  { "datum": "03.04.2020", "pocet_hosp": "375.0", "stav_tezky": "86.0" },  { "datum": "04.04.2020", "pocet_hosp": "365.0", "stav_tezky": "84.0" },  { "datum": "05.04.2020", "pocet_hosp": "371.0", "stav_tezky": "82.0" },  { "datum": "06.04.2020", "pocet_hosp": "395.0", "stav_tezky": "87.0" },  { "datum": "07.04.2020", "pocet_hosp": "413.0", "stav_tezky": "100.0" },  { "datum": "08.04.2020", "pocet_hosp": "423.0", "stav_tezky": "94.0" },  { "datum": "09.04.2020", "pocet_hosp": "417.0", "stav_tezky": "96.0" },  { "datum": "10.04.2020", "pocet_hosp": "406.0", "stav_tezky": "89.0" },  { "datum": "11.04.2020", "pocet_hosp": "406.0", "stav_tezky": "87.0" },  { "datum": "12.04.2020", "pocet_hosp": "402.0", "stav_tezky": "100.0" },  { "datum": "13.04.2020", "pocet_hosp": "395.0", "stav_tezky": "93.0" },  { "datum": "14.04.2020", "pocet_hosp": "385.0", "stav_tezky": "83.0" },  { "datum": "15.04.2020", "pocet_hosp": "370.0", "stav_tezky": "76.0" },  { "datum": "16.04.2020", "pocet_hosp": "362.0", "stav_tezky": "83.0" },  { "datum": "17.04.2020", "pocet_hosp": "355.0", "stav_tezky": "80.0" },  { "datum": "18.04.2020", "pocet_hosp": "338.0", "stav_tezky": "74.0" },  { "datum": "19.04.2020", "pocet_hosp": "345.0", "stav_tezky": "79.0" },  { "datum": "20.04.2020", "pocet_hosp": "348.0", "stav_tezky": "76.0" },  { "datum": "21.04.2020", "pocet_hosp": "365.0", "stav_tezky": "78.0" },  { "datum": "22.04.2020", "pocet_hosp": "342.0", "stav_tezky": "74.0" },  { "datum": "23.04.2020", "pocet_hosp": "335.0", "stav_tezky": "78.0" },  { "datum": "24.04.2020", "pocet_hosp": "329.0", "stav_tezky": "75.0" },  { "datum": "25.04.2020", "pocet_hosp": "314.0", "stav_tezky": "71.0" },  { "datum": "26.04.2020", "pocet_hosp": "310.0", "stav_tezky": "72.0" },  { "datum": "27.04.2020", "pocet_hosp": "309.0", "stav_tezky": "68.0" },  { "datum": "28.04.2020", "pocet_hosp": "305.0", "stav_tezky": "68.0" },  { "datum": "29.04.2020", "pocet_hosp": "286.0", "stav_tezky": "62.0" },  { "datum": "30.04.2020", "pocet_hosp": "273.0", "stav_tezky": "58.0" },  { "datum": "01.05.2020", "pocet_hosp": "244.0", "stav_tezky": "53.0" },  { "datum": "02.05.2020", "pocet_hosp": "233.0", "stav_tezky": "49.0" },  { "datum": "03.05.2020", "pocet_hosp": "232.0", "stav_tezky": "49.0" },  { "datum": "04.05.2020", "pocet_hosp": "236.0", "stav_tezky": "54.0" },  { "datum": "05.05.2020", "pocet_hosp": "223.0", "stav_tezky": "46.0" },  { "datum": "06.05.2020", "pocet_hosp": "209.0", "stav_tezky": "43.0" },  { "datum": "07.05.2020", "pocet_hosp": "191.0", "stav_tezky": "41.0" },  { "datum": "08.05.2020", "pocet_hosp": "185.0", "stav_tezky": "43.0" },  { "datum": "09.05.2020", "pocet_hosp": "173.0", "stav_tezky": "39.0" },  { "datum": "10.05.2020", "pocet_hosp": "167.0", "stav_tezky": "39.0" },  { "datum": "11.05.2020", "pocet_hosp": "167.0", "stav_tezky": "42.0" },  { "datum": "12.05.2020", "pocet_hosp": "157.0", "stav_tezky": "40.0" },  { "datum": "13.05.2020", "pocet_hosp": "147.0", "stav_tezky": "38.0" },  { "datum": "14.05.2020", "pocet_hosp": "128.0", "stav_tezky": "34.0" },  { "datum": "15.05.2020", "pocet_hosp": "118.0", "stav_tezky": "34.0" },  { "datum": "16.05.2020", "pocet_hosp": "112.0", "stav_tezky": "33.0" },  { "datum": "17.05.2020", "pocet_hosp": "110.0", "stav_tezky": "34.0" },  { "datum": "18.05.2020", "pocet_hosp": "115.0", "stav_tezky": "32.0" },  { "datum": "19.05.2020", "pocet_hosp": "109.0", "stav_tezky": "31.0" },  { "datum": "20.05.2020", "pocet_hosp": "101.0", "stav_tezky": "31.0" },  { "datum": "21.05.2020", "pocet_hosp": "101.0", "stav_tezky": "29.0" },  { "datum": "22.05.2020", "pocet_hosp": "98.0", "stav_tezky": "24.0" },  { "datum": "23.05.2020", "pocet_hosp": "93.0", "stav_tezky": "22.0" },  { "datum": "24.05.2020", "pocet_hosp": "94.0", "stav_tezky": "21.0" },  { "datum": "25.05.2020", "pocet_hosp": "91.0", "stav_tezky": "19.0" },  { "datum": "26.05.2020", "pocet_hosp": "92.0", "stav_tezky": "15.0" },  { "datum": "27.05.2020", "pocet_hosp": "86.0", "stav_tezky": "15.0" },  { "datum": "28.05.2020", "pocet_hosp": "74.0", "stav_tezky": "15.0" },  { "datum": "29.05.2020", "pocet_hosp": "71.0", "stav_tezky": "15.0" },  { "datum": "30.05.2020", "pocet_hosp": "72.0", "stav_tezky": "12.0" },  { "datum": "31.05.2020", "pocet_hosp": "70.0", "stav_tezky": "12.0" },  { "datum": "01.06.2020", "pocet_hosp": "73.0", "stav_tezky": "13.0" },  { "datum": "02.06.2020", "pocet_hosp": "75.0", "stav_tezky": "11.0" },  { "datum": "03.06.2020", "pocet_hosp": "65.0", "stav_tezky": "10.0" },  { "datum": "04.06.2020", "pocet_hosp": "60.0", "stav_tezky": "9.0" },  { "datum": "05.06.2020", "pocet_hosp": "60.0", "stav_tezky": "9.0" },  { "datum": "06.06.2020", "pocet_hosp": "59.0", "stav_tezky": "8.0" },  { "datum": "07.06.2020", "pocet_hosp": "61.0", "stav_tezky": "10.0" },  { "datum": "08.06.2020", "pocet_hosp": "60.0", "stav_tezky": "9.0" },  { "datum": "09.06.2020", "pocet_hosp": "63.0", "stav_tezky": "9.0" },  { "datum": "10.06.2020", "pocet_hosp": "66.0", "stav_tezky": "11.0" },  { "datum": "11.06.2020", "pocet_hosp": "65.0", "stav_tezky": "12.0" },  { "datum": "12.06.2020", "pocet_hosp": "69.0", "stav_tezky": "11.0" },  { "datum": "13.06.2020", "pocet_hosp": "67.0", "stav_tezky": "12.0" },  { "datum": "14.06.2020", "pocet_hosp": "68.0", "stav_tezky": "10.0" },  { "datum": "15.06.2020", "pocet_hosp": "77.0", "stav_tezky": "9.0" },  { "datum": "16.06.2020", "pocet_hosp": "78.0", "stav_tezky": "8.0" },  { "datum": "17.06.2020", "pocet_hosp": "84.0", "stav_tezky": "7.0" },  { "datum": "18.06.2020", "pocet_hosp": "83.0", "stav_tezky": "10.0" },  { "datum": "19.06.2020", "pocet_hosp": "82.0", "stav_tezky": "8.0" },  { "datum": "20.06.2020", "pocet_hosp": "80.0", "stav_tezky": "9.0" },  { "datum": "21.06.2020", "pocet_hosp": "74.0", "stav_tezky": "9.0" },  { "datum": "22.06.2020", "pocet_hosp": "75.0", "stav_tezky": "9.0" },  { "datum": "23.06.2020", "pocet_hosp": "77.0", "stav_tezky": "9.0" },  { "datum": "24.06.2020", "pocet_hosp": "78.0", "stav_tezky": "13.0" },  { "datum": "25.06.2020", "pocet_hosp": "67.0", "stav_tezky": "12.0" },  { "datum": "26.06.2020", "pocet_hosp": "64.0", "stav_tezky": "11.0" },  { "datum": "27.06.2020", "pocet_hosp": "61.0", "stav_tezky": "11.0" },  { "datum": "28.06.2020", "pocet_hosp": "66.0", "stav_tezky": "13.0" },  { "datum": "29.06.2020", "pocet_hosp": "69.0", "stav_tezky": "11.0" },  { "datum": "30.06.2020", "pocet_hosp": "71.0", "stav_tezky": "11.0" },  { "datum": "01.07.2020", "pocet_hosp": "75.0", "stav_tezky": "10.0" },  { "datum": "02.07.2020", "pocet_hosp": "72.0", "stav_tezky": "11.0" },  { "datum": "03.07.2020", "pocet_hosp": "71.0", "stav_tezky": "11.0" },  { "datum": "04.07.2020", "pocet_hosp": "70.0", "stav_tezky": "13.0" },  { "datum": "05.07.2020", "pocet_hosp": "73.0", "stav_tezky": "13.0" },  { "datum": "06.07.2020", "pocet_hosp": "69.0", "stav_tezky": "10.0" },  { "datum": "07.07.2020", "pocet_hosp": "77.0", "stav_tezky": "11.0" },  { "datum": "08.07.2020", "pocet_hosp": "85.0", "stav_tezky": "10.0" },  { "datum": "09.07.2020", "pocet_hosp": "73.0", "stav_tezky": "15.0" },  { "datum": "10.07.2020", "pocet_hosp": "69.0", "stav_tezky": "15.0" },  { "datum": "11.07.2020", "pocet_hosp": "64.0", "stav_tezky": "14.0" },  { "datum": "12.07.2020", "pocet_hosp": "65.0", "stav_tezky": "15.0" },  { "datum": "13.07.2020", "pocet_hosp": "71.0", "stav_tezky": "19.0" },  { "datum": "14.07.2020", "pocet_hosp": "71.0", "stav_tezky": "17.0" },  { "datum": "15.07.2020", "pocet_hosp": "80.0", "stav_tezky": "17.0" },  { "datum": "16.07.2020", "pocet_hosp": "76.0", "stav_tezky": "21.0" },  { "datum": "17.07.2020", "pocet_hosp": "74.0", "stav_tezky": "20.0" },  { "datum": "18.07.2020", "pocet_hosp": "74.0", "stav_tezky": "19.0" },  { "datum": "19.07.2020", "pocet_hosp": "74.0", "stav_tezky": "19.0" },  { "datum": "20.07.2020", "pocet_hosp": "71.0", "stav_tezky": "18.0" },  { "datum": "21.07.2020", "pocet_hosp": "78.0", "stav_tezky": "22.0" },  { "datum": "22.07.2020", "pocet_hosp": "92.0", "stav_tezky": "21.0" },  { "datum": "23.07.2020", "pocet_hosp": "91.0", "stav_tezky": "20.0" },  { "datum": "24.07.2020", "pocet_hosp": "94.0", "stav_tezky": "16.0" },  { "datum": "25.07.2020", "pocet_hosp": "92.0", "stav_tezky": "15.0" },  { "datum": "26.07.2020", "pocet_hosp": "91.0", "stav_tezky": "14.0" },  { "datum": "27.07.2020", "pocet_hosp": "109.0", "stav_tezky": "17.0" },  { "datum": "28.07.2020", "pocet_hosp": "114.0", "stav_tezky": "17.0" },  { "datum": "29.07.2020", "pocet_hosp": "116.0", "stav_tezky": "18.0" },  { "datum": "30.07.2020", "pocet_hosp": "117.0", "stav_tezky": "20.0" },  { "datum": "31.07.2020", "pocet_hosp": "114.0", "stav_tezky": "19.0" },  { "datum": "01.08.2020", "pocet_hosp": "116.0", "stav_tezky": "19.0" },  { "datum": "02.08.2020", "pocet_hosp": "109.0", "stav_tezky": "18.0" },  { "datum": "03.08.2020", "pocet_hosp": "113.0", "stav_tezky": "16.0" },  { "datum": "04.08.2020", "pocet_hosp": "115.0", "stav_tezky": "13.0" },  { "datum": "05.08.2020", "pocet_hosp": "110.0", "stav_tezky": "15.0" },  { "datum": "06.08.2020", "pocet_hosp": "105.0", "stav_tezky": "14.0" },  { "datum": "07.08.2020", "pocet_hosp": "106.0", "stav_tezky": "16.0" },  { "datum": "08.08.2020", "pocet_hosp": "104.0", "stav_tezky": "16.0" },  { "datum": "09.08.2020", "pocet_hosp": "107.0", "stav_tezky": "17.0" },  { "datum": "10.08.2020", "pocet_hosp": "113.0", "stav_tezky": "23.0" },  { "datum": "11.08.2020", "pocet_hosp": "110.0", "stav_tezky": "23.0" },  { "datum": "12.08.2020", "pocet_hosp": "101.0", "stav_tezky": "22.0" },  { "datum": "13.08.2020", "pocet_hosp": "106.0", "stav_tezky": "23.0" },  { "datum": "14.08.2020", "pocet_hosp": "113.0", "stav_tezky": "24.0" },  { "datum": "15.08.2020", "pocet_hosp": "103.0", "stav_tezky": "26.0" },  { "datum": "16.08.2020", "pocet_hosp": "101.0", "stav_tezky": "24.0" },  { "datum": "17.08.2020", "pocet_hosp": "113.0", "stav_tezky": "26.0" },  { "datum": "18.08.2020", "pocet_hosp": "103.0", "stav_tezky": "25.0" },  { "datum": "19.08.2020", "pocet_hosp": "108.0", "stav_tezky": "24.0" },  { "datum": "20.08.2020", "pocet_hosp": "116.0", "stav_tezky": "24.0" },  { "datum": "21.08.2020", "pocet_hosp": "119.0", "stav_tezky": "24.0" },  { "datum": "22.08.2020", "pocet_hosp": "124.0", "stav_tezky": "26.0" },  { "datum": "23.08.2020", "pocet_hosp": "128.0", "stav_tezky": "24.0" },  { "datum": "24.08.2020", "pocet_hosp": "129.0", "stav_tezky": "32.0" },  { "datum": "25.08.2020", "pocet_hosp": "131.0", "stav_tezky": "32.0" },  { "datum": "26.08.2020", "pocet_hosp": "136.0", "stav_tezky": "32.0" },  { "datum": "27.08.2020", "pocet_hosp": "147.0", "stav_tezky": "32.0" },  { "datum": "28.08.2020", "pocet_hosp": "156.0", "stav_tezky": "37.0" },  { "datum": "29.08.2020", "pocet_hosp": "155.0", "stav_tezky": "36.0" },  { "datum": "30.08.2020", "pocet_hosp": "154.0", "stav_tezky": "36.0" },  { "datum": "31.08.2020", "pocet_hosp": "171.0", "stav_tezky": "36.0" },  { "datum": "01.09.2020", "pocet_hosp": "178.0", "stav_tezky": "41.0" },  { "datum": "02.09.2020", "pocet_hosp": "180.0", "stav_tezky": "42.0" },  { "datum": "03.09.2020", "pocet_hosp": "195.0", "stav_tezky": "44.0" },  { "datum": "04.09.2020", "pocet_hosp": "207.0", "stav_tezky": "49.0" },  { "datum": "05.09.2020", "pocet_hosp": "209.0", "stav_tezky": "52.0" },  { "datum": "06.09.2020", "pocet_hosp": "220.0", "stav_tezky": "56.0" },  { "datum": "07.09.2020", "pocet_hosp": "256.0", "stav_tezky": "65.0" },  { "datum": "08.09.2020", "pocet_hosp": "253.0", "stav_tezky": "57.0" },  { "datum": "09.09.2020", "pocet_hosp": "266.0", "stav_tezky": "61.0" },  { "datum": "10.09.2020", "pocet_hosp": "272.0", "stav_tezky": "67.0" },  { "datum": "11.09.2020", "pocet_hosp": "310.0", "stav_tezky": "66.0" },  { "datum": "12.09.2020", "pocet_hosp": "283.0", "stav_tezky": "63.0" },  { "datum": "13.09.2020", "pocet_hosp": "305.0", "stav_tezky": "65.0" },  { "datum": "14.09.2020", "pocet_hosp": "339.0", "stav_tezky": "75.0" },  { "datum": "15.09.2020", "pocet_hosp": "369.0", "stav_tezky": "74.0" },  { "datum": "16.09.2020", "pocet_hosp": "399.0", "stav_tezky": "80.0" },  { "datum": "17.09.2020", "pocet_hosp": "495.0", "stav_tezky": "91.0" },  { "datum": "18.09.2020", "pocet_hosp": "525.0", "stav_tezky": "96.0" },  { "datum": "19.09.2020", "pocet_hosp": "508.0", "stav_tezky": "93.0" },  { "datum": "20.09.2020", "pocet_hosp": "532.0", "stav_tezky": "106.0" },  { "datum": "21.09.2020", "pocet_hosp": "613.0", "stav_tezky": "113.0" },  { "datum": "22.09.2020", "pocet_hosp": "637.0", "stav_tezky": "120.0" },  { "datum": "23.09.2020", "pocet_hosp": "710.0", "stav_tezky": "135.0" },  { "datum": "24.09.2020", "pocet_hosp": "768.0", "stav_tezky": "155.0" },  { "datum": "25.09.2020", "pocet_hosp": "825.0", "stav_tezky": "164.0" },  { "datum": "26.09.2020", "pocet_hosp": "797.0", "stav_tezky": "184.0" },  { "datum": "27.09.2020", "pocet_hosp": "823.0", "stav_tezky": "188.0" },  { "datum": "28.09.2020", "pocet_hosp": "845.0", "stav_tezky": "197.0" },  { "datum": "29.09.2020", "pocet_hosp": "998.0", "stav_tezky": "204.0" },  { "datum": "30.09.2020", "pocet_hosp": "1062.0", "stav_tezky": "196.0" },  { "datum": "01.10.2020", "pocet_hosp": "1164.0", "stav_tezky": "232.0" },  { "datum": "02.10.2020", "pocet_hosp": "1241.0", "stav_tezky": "244.0" },  { "datum": "03.10.2020", "pocet_hosp": "1209.0", "stav_tezky": "263.0" },  { "datum": "04.10.2020", "pocet_hosp": "1281.0", "stav_tezky": "265.0" },  { "datum": "05.10.2020", "pocet_hosp": "1488.0", "stav_tezky": "314.0" },  { "datum": "06.10.2020", "pocet_hosp": "1634.0", "stav_tezky": "331.0" },  { "datum": "07.10.2020", "pocet_hosp": "1786.0", "stav_tezky": "364.0" },  { "datum": "08.10.2020", "pocet_hosp": "1957.0", "stav_tezky": "405.0" },  { "datum": "09.10.2020", "pocet_hosp": "2149.0", "stav_tezky": "413.0" },  { "datum": "10.10.2020", "pocet_hosp": "2168.0", "stav_tezky": "437.0" },  { "datum": "11.10.2020", "pocet_hosp": "2220.0", "stav_tezky": "410.0" },  { "datum": "12.10.2020", "pocet_hosp": "2579.0", "stav_tezky": "468.0" }, 
 				];
 
-				const vyroky = [
-					
-					{ "datum": "2020-03-16", "vyrok": "Koronavirus není sranda, už bych ho nezlehčoval. Jen hlupák nemění názory.", "autor": "Prof. Jan Pirk, přední český kardiochirurg", "class": "pirk" },
-					
-					{ "datum": "2020-04-21", "vyrok": "Vyděsili jsme miliony seniorů, že umřou. Zdraví lidé by měli covid prodělat.", "autor": "Prof. Jan Pirk, přední český kardiochirurg", "class": "pirk" },
-					
-					{ "datum": "2020-06-03", "vyrok": "Druhá vlna nebude, za půl roku covid zmizí.", "autor": "MUDr. Soňa Peková", "class": "pekova" },
-					
-					{ "datum": "2020-07-05", "vyrok": "Rouška je nové náboženství. Odmítám se stát součástí režimu, který víru povyšuje na zákon. Někdo jim věří, někdo nikoliv. Neexistují vědecké důkazy, že kus starých trenýrek nebo ubrusu na puse dokáže zachycovat mikročástice jako jsou viry.", "autor": "Novinářka Lenka Klicperová", "class": "klicperova" },
-					
-					{ "datum": "2020-07-23", "vyrok": "Jsem rouškofob. Koronavirus je třeba zlehčovat, už se sebepoškozujeme.", "autor": "Senátor za ČSSD Prof. Jan Žaloudík", "class": "zaloudik" },
-					
-					{ "datum": "2020-05-28", "vyrok": "Je to mediální virus, panika živila samu sebe, celá planeta udělala chyby.", "autor": "JUDr. Ing. Miloslav Ludvík, MBA, ředitel FN Motol.", "class": "ludvik" },
-					
-					{ "datum": "2020-05-19", "vyrok": "Rouška je náhubek a z lidí je stádo, co se samo hlídá.", "autor": "Lou Fanánek Hagen, frontman kapely Tři sestry.", "class": "hagen" },
-					
-					{ "datum": "2020-09-17", "vyrok": "To není pandemie koronaviru, ale šílenství. Mám plnou ordinaci vyděšených rodičů.", "autor": "MUDr. Jan Hnízdil", "class": "hnizdil" },
-					
-					{ "datum": "2020-09-08", "vyrok": "Covid zvládáme famózně, roušky epidemii jen odloží a zhorší, lidi zemřou stejně.", "autor": "MUDr. Roman Šmucler", "class": "smucler" },
-					
-					{ "datum": "2020-08-06", "vyrok": "Zastrašte lidi papírovým drakem jménem COVID-19 a zbaví se všeho, na čem jim záleželo. Tohle je nejstrašnější důsledek ne-epidemie.", "autor": "Publicista Bohumil Pečinka", "class": "pecinka" },
-					
-					{ "datum": "2020-08-26", "vyrok": "Koronavirus si už show nezaslouží, citelně zeslábl. Snad mu to vydrží.", "autor": "Prof. RNDr. Ladislav Dušek, ředitel ÚZISu", "class": "dusek" },
-					
-					{ "datum": "2020-07-21", "vyrok": "Jde o obvyklou, někdy trochu víc nepříjemnou virózu.", "autor": "MUDr. Jiří Votruba", "class": "votruba" },
-					
-					{ "datum": "2020-06-09", "vyrok": "Koronavirus mě zklamal, jako lékař jsem se na něj těšil.", "autor": "MUDr. Lukáš Pollert", "class": "pollert" },
-					
-					{ "datum": "2020-09-18", "vyrok": "Je to jen blbá chřipka, která se dá přežít.", "autor": "Zpěvačka Lucie Bílá", "class": "bila" },
-					
-					{ "datum": "2020-08-19", "vyrok": "To, co předvádí vláda, je matení lidí. Opatření jsou nesmyslná a zbytečná.", "autor": "Předseda ODS Petr Fiala", "class": "fiala" },
-					
-					{ "datum": "2020-09-10", "vyrok": "Podle mě ta nařízení sledují ještě něco jiného než zdraví populace, že za tím vším je ještě nějaký další úmýsl.", "autor": "Prof. Jan Pirk, přední český kardiochirurg", "class": "pirk" },
-					
-					{ "datum": "2020-08-21", "vyrok": "Rozhodli jsme se správně, lidé už jsou z roušek otrávení.", "autor": "Premiér Andrej Babiš", "class": "babis" },
-					
-					{ "datum": "2020-10-03", "vyrok": "Jsme za vrcholem, nemocnice to zvládnou.", "autor": "MUDr. Martin Balík", "class": "balik" },
-					
-					{ "datum": "2020-10-01", "vyrok": "Tisíce mrtvých nebudou, italský scénář také ne.", "autor": "Prof. MUDr. David Feltl, ředitel VFN", "class": "feltl" },
-					
-					{ "datum": "2020-09-17", "vyrok": "Provádíme testy za miliony, ale v Motole je jen pár lidí s covid-19.", "autor": "JUDr. Ing. Miloslav Ludvík, MBA, ředitel FN Motol", "class": "ludvik" },
-					
-					{ "datum": "2020-10-07", "vyrok": "Za hysterií kolem covidu-19 je tlak levice na rovnostářství.", "autor": "Institut Václava Klause", "class": "klaus" },
-					
-					{ "datum": "2020-09-26", "vyrok": "To je co tohle? Fašismus s totalitou?!.", "autor": "Zpěvačka Ilona Csáková v reakci na roušky ve třídách", "class": "csakova" },
-					
-					{ "datum": "2020-10-05", "vyrok": "Covid do Vánoc zmizí. Výrazně zeslábl, je tu šílenství.", "autor": "MUDr. Soňa Peková", "class": "pekova" },
-					
-					{ "datum": "2020-09-17", "vyrok": "Berme pandemii s humorem a nevytvářejme paniku.", "autor": "MUDr. Lukáš Pollert", "class": "pollert" },
-					
+				const comments = [
+					 { "datum": "2020-03-16", "comment": "Koronavirus není sranda, už bych ho nezlehčoval. Jen hlupák nemění názory.", "author": "" },  { "datum": "2020-04-21", "comment": "Vyděsili jsme miliony seniorů, že umřou. Zdraví lidé by měli covid prodělat.", "author": "" },  { "datum": "2020-06-03", "comment": "Druhá vlna nebude, za půl roku covid zmizí.", "author": "" },  { "datum": "2020-07-05", "comment": "Rouška je nové náboženství. Odmítám se stát součástí režimu, který víru povyšuje na zákon. Někdo jim věří, někdo nikoliv. Neexistují vědecké důkazy, že kus starých trenýrek nebo ubrusu na puse dokáže zachycovat mikročástice jako jsou viry.", "author": "" },  { "datum": "2020-07-23", "comment": "Jsem rouškofob. Koronavirus je třeba zlehčovat, už se sebepoškozujeme.", "author": "" },  { "datum": "2020-05-28", "comment": "Je to mediální virus, panika živila samu sebe, celá planeta udělala chyby.", "author": "" },  { "datum": "2020-05-19", "comment": "Rouška je náhubek a z lidí je stádo, co se samo hlídá.", "author": "" },  { "datum": "2020-09-17", "comment": "To není pandemie koronaviru, ale šílenství. Mám plnou ordinaci vyděšených rodičů.", "author": "" },  { "datum": "2020-09-08", "comment": "Covid zvládáme famózně, roušky epidemii jen odloží a zhorší, lidi zemřou stejně.", "author": "" },  { "datum": "2020-08-06", "comment": "Zastrašte lidi papírovým drakem jménem COVID-19 a zbaví se všeho, na čem jim záleželo. Tohle je nejstrašnější důsledek ne-epidemie.", "author": "" },  { "datum": "2020-08-26", "comment": "Koronavirus si už show nezaslouží, citelně zeslábl. Snad mu to vydrží.", "author": "" },  { "datum": "2020-07-21", "comment": "Jde o obvyklou, někdy trochu víc nepříjemnou virózu.", "author": "" },  { "datum": "2020-06-09", "comment": "Koronavirus mě zklamal, jako lékař jsem se na něj těšil.", "author": "" },  { "datum": "2020-09-18", "comment": "Je to jen blbá chřipka, která se dá přežít.", "author": "" },  { "datum": "2020-08-19", "comment": "To, co předvádí vláda, je matení lidí. Opatření jsou nesmyslná a zbytečná.", "author": "" },  { "datum": "2020-09-10", "comment": "Podle mě ta nařízení sledují ještě něco jiného než zdraví populace, že za tím vším je ještě nějaký další úmýsl.", "author": "" },  { "datum": "2020-08-21", "comment": "Rozhodli jsme se správně, lidé už jsou z roušek otrávení.", "author": "" },  { "datum": "2020-10-03", "comment": "Jsme za vrcholem, nemocnice to zvládnou.", "author": "" },  { "datum": "2020-10-01", "comment": "Tisíce mrtvých nebudou, italský scénář také ne.", "author": "" },  { "datum": "2020-09-17", "comment": "Provádíme testy za miliony, ale v Motole je jen pár lidí s covid-19.", "author": "" },  { "datum": "2020-10-07", "comment": "Za hysterií kolem covidu-19 je tlak levice na rovnostářství.", "author": "" },  { "datum": "2020-09-26", "comment": "To je co tohle? Fašismus s totalitou?!.", "author": "" },  { "datum": "2020-10-05", "comment": "Covid do Vánoc zmizí. Výrazně zeslábl, je tu šílenství.", "author": "" },  { "datum": "2020-09-17", "comment": "Berme pandemii s humorem a nevytvářejme paniku.", "author": "" }, 
+				];
+				const authors = [
+					 { "title": "Prof. Jan Pirk, přední český kardiochirurg", "author": "Jan Pirk", "class": "pirk" },  { "title": "MUDr. Soňa Peková", "author": "Soňa Peková", "class": "pekova" },  { "title": "Novinářka Lenka Klicperová", "author": "Lenka Klicperová", "class": "klicperova" },  { "title": "Senátor za ČSSD Prof. Jan Žaloudík", "author": "Jan Žaloudík", "class": "zaloudik" },  { "title": "JUDr. Ing. Miloslav Ludvík, MBA, ředitel FN Motol.", "author": "Miloslav Ludvík", "class": "ludvik" },  { "title": "Lou Fanánek Hagen, frontman kapely Tři sestry.", "author": "Lou Fanánek Hagen", "class": "hagen" },  { "title": "MUDr. Jan Hnízdil", "author": "Jan Hnízdil", "class": "hnizdil" },  { "title": "MUDr. Roman Šmucler", "author": "Roman Šmucler", "class": "smucler" },  { "title": "Publicista Bohumil Pečinka", "author": "Bohumil Pečinka", "class": "pecinka" },  { "title": "Prof. RNDr. Ladislav Dušek, ředitel ÚZISu", "author": "Ladislav Dušek", "class": "dusek" },  { "title": "MUDr. Jiří Votruba", "author": "Jiří Votruba", "class": "votruba" },  { "title": "MUDr. Lukáš Pollert", "author": "Lukáš Pollert", "class": "pollert" },  { "title": "Zpěvačka Lucie Bílá", "author": "Lucie Bílá", "class": "bila" },  { "title": "Předseda ODS Petr Fiala", "author": "Petr Fiala", "class": "fiala" },  { "title": "Premiér Andrej Babiš", "author": "Andrej Babiš", "class": "babis" },  { "title": "MUDr. Martin Balík", "author": "Martin Balík", "class": "balik" },  { "title": "Prof. MUDr. David Feltl, ředitel VFN", "author": "David Feltl", "class": "feltl" },  { "title": "JUDr. Ing. Miloslav Ludvík, MBA, ředitel FN Motol", "author": "Miloslav Ludvík", "class": "ludvik" },  { "title": "Institut Václava Klause", "author": "Václav Klaus", "class": "klaus" },  { "title": "Zpěvačka Ilona Csáková v reakci na roušky ve třídách", "author": "Ilona Csáková", "class": "csakova" }, 
 				];
 				var margin = {top: 10, right: 30, bottom: 50, left: 60},
-				    width  = 1200 - margin.left - margin.right,
-				    height = 580 - margin.top  - margin.bottom;
+				    width  = 0.9 * screen.width - margin.left - margin.right,
+				    height = 0.7 * screen.height - margin.top  - margin.bottom;
 
-				const svg = d3.select("body")
+				const svg = d3.select(".chart")
 					.append("svg")
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", height + margin.top + margin.bottom)
 					.append("g")
 					.attr("transform", "translate( " + margin.left + "," + margin.top + ")");
-				const datum = data.map( d => d.datum );
-				const hosp  = data.map( d => d.pocet_hosp );
-				const tezky = data.map( d => d.stavy_tezky );
+				const datum  = data.map( d => d.datum );
+				const hosp   = data.map( d => d.pocet_hosp );
+				const tezky  = data.map( d => d.stavy_tezky );
 
 				const xScale  = d3.scaleBand().domain( datum ).range([0, width]).padding(0.4);
 				const yScale  = d3.scaleLinear().domain( [0, d3.max( hosp )] ).range([height, 0]);
@@ -618,10 +164,31 @@
 					  .y(function(d) {return yScale(d.stav_tezky) })( data )
 				  );
 
-				//draw vyroky
+				//draw authors 
+				const authorDiv = d3.select(".authors");
+				authorDiv.selectAll("span")
+				 .data(authors)
+				 .enter()
+				 .append("span")
+				 .attr("class", d => d.class )
+				 .text( d => d.author )
+				 .on('mouseover', function (d, i) {
+					 d3.select(this).transition()
+					  .duration('50')
+					  .attr('class', d3.select(this).attr('class') + ' selected');
+					 console.log( d3.select(this).attr('class') );
+				 })
+				 .on('mouseout', function (d, i) {
+					 d3.select(this).transition()
+					  .duration('50')
+					  .attr('class', d3.select(this).attr('class').replace(' selected', ''));
+					 console.log( d3.select(this).attr('class') );
+				 });
+
+				//draw comments 
 				/*
 				const g = svg.append("g")
-				  .attr("id", "vyroky");
+				  .attr("id", "comments");
 
 				g.selectAll(".container")
 				.data( vyroky )
@@ -647,5 +214,7 @@
 		</script>
 	</head>
 	<body>
+		<div class="authors"></div>
+		<div class="chart"></div>
 	</body>
 </html>

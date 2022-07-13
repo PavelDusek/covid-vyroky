@@ -4,93 +4,117 @@
 		<meta charset="utf-8">
 		<title>Výroky o covid-19 v kontextu dat.</title>
 		<style>
+			span.pirk { background: cornflowerblue; }
 			.pirk rect { fill: none; stroke-width:2; stroke: red; }
 			.pirk text { fill: red; }
 
+			span.pekova { background: blue; }
 			.pekova rect {fill: none; stroke-width:2; stroke: red;}
 			.pekova text { fill: red; }
 
+			span.klicperova { background: coral; }
 			.klicperova rect {fill: none; stroke-width:2; stroke: red;}
 			.klicperova text { fill: red; }
 
+			span.zaloudik { background: salmon; }
 			.zaloudik rect {fill: none; stroke-width:2; stroke: red;}
 			.zaloudik text { fill: red; }
 
+			span.ludvik { background: lightgray; }
 			.ludvik rect {fill: none; stroke-width:2; stroke: red;}
 			.ludvik text { fill: red; }
 
+			span.hagen { background: orchid; }
 			.hagen rect {fill: none; stroke-width:2; stroke: red;}
 			.hagen text { fill: red; }
 
+			span.hnizdil { background: plum; }
 			.hnizdil rect {fill: none; stroke-width:2; stroke: red;}
 			.hnizdil text { fill: red; }
 
+			span.smucler { background: springgreen; }
 			.smucler rect {fill: none; stroke-width:2; stroke: red;}
 			.smucler text { fill: red; }
 
+			span.pecinka { background: peachpuff; }
 			.pecinka rect {fill: none; stroke-width:2; stroke: red;}
 			.pecinka text { fill: red; }
 
+			span.dusek { background: tomato; }
 			.dusek rect {fill: none; stroke-width:2; stroke: red;}
 			.dusek text { fill: red; }
 
+			span.votruba { background: turquoise; }
 			.votruba rect {fill: none; stroke-width:2; stroke: red;}
 			.votruba text { fill: red; }
 
+			span.pollert{ background: wheat; }
 			.pollert rect {fill: none; stroke-width:2; stroke: red;}
 			.pollert text { fill: red; }
 
+			span.bila { background: seashell; }
 			.bila rect {fill: none; stroke-width:2; stroke: red;}
 			.bila text { fill: red; }
 
+			span.fiala { background: slateblue; }
 			.fiala rect {fill: none; stroke-width:2; stroke: red;}
 			.fiala text { fill: red; }
 
+			span.babis { background: gold; }
 			.babis rect {fill: none; stroke-width:2; stroke: red;}
 			.babis text { fill: red; }
 
+			span.balik { background: olive; }
 			.balik rect {fill: none; stroke-width:2; stroke: red;}
 			.balik text { fill: red; }
 
+			span.feltl { background: indianred; }
 			.feltl rect {fill: none; stroke-width:2; stroke: red;}
 			.feltl text { fill: red; }
 
+			span.klaus { background: dodgerblue; }
 			.klaus rect {fill: none; stroke-width:2; stroke: red;}
 			.klaus text { fill: red; }
 
+			span.csakova { background: lightgray; }
 			.csakova {fill: none; stroke-width:2; stroke: red;}
 			.csakova text { fill: red; }
 
 			.hospitalizace { stroke: steelblue; fill: none; stroke-width: 3; }
 			.tezky_stav { stroke: orange; fill: none; stroke-width: 3; }
+
+			body { text-align: center; margin: auto; }
+
+			.authors { display: flex; flex-wrap: wrap; background: beige; }
+			.authors span { margin: 5px; padding: 2px; border-radius: 5px; border: solid 2px gray; cursor: pointer; }
+			span.selected { border: solid 2px darkred; }
 		</style>
 		<script src="https://d3js.org/d3.v5.min.js"></script>
 		<script language="javascript">
 			function drawChart() {
 				const data = [
-					{% for day in data %}
-					{ "datum": "{{day.datum}}", "pocet_hosp": "{{day.pocet_hosp}}", "stav_tezky": "{{day.stav_tezky}}" },
-					{% endfor %}
+					{% for day in data %} { "datum": "{{day.datum}}", "pocet_hosp": "{{day.pocet_hosp}}", "stav_tezky": "{{day.stav_tezky}}" }, {% endfor %}
 				];
 
-				const vyroky = [
-					{% for vyrok in vyroky %}
-					{ "datum": "{{vyrok.datum}}", "vyrok": "{{vyrok.vyrok}}", "autor": "{{vyrok.autor}}", "class": "{{vyrok.class}}" },
-					{% endfor %}
+				const comments = [
+					{% for comment in comments %} { "datum": "{{comment.datum}}", "comment": "{{comment.vyrok}}", "author": "{{comment.author}}" }, {% endfor %}
+				];
+				const authors = [
+					{% for author in authors %} { "title": "{{author.title}}", "author": "{{author.author}}", "class": "{{author.class}}" }, {% endfor %}
 				];
 				var margin = {top: 10, right: 30, bottom: 50, left: 60},
-				    width  = 1200 - margin.left - margin.right,
-				    height = 580 - margin.top  - margin.bottom;
+				    width  = 0.9 * screen.width - margin.left - margin.right,
+				    height = 0.7 * screen.height - margin.top  - margin.bottom;
 
-				const svg = d3.select("body")
+				const svg = d3.select(".chart")
 					.append("svg")
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", height + margin.top + margin.bottom)
 					.append("g")
 					.attr("transform", "translate( " + margin.left + "," + margin.top + ")");
-				const datum = data.map( d => d.datum );
-				const hosp  = data.map( d => d.pocet_hosp );
-				const tezky = data.map( d => d.stavy_tezky );
+				const datum  = data.map( d => d.datum );
+				const hosp   = data.map( d => d.pocet_hosp );
+				const tezky  = data.map( d => d.stavy_tezky );
 
 				const xScale  = d3.scaleBand().domain( datum ).range([0, width]).padding(0.4);
 				const yScale  = d3.scaleLinear().domain( [0, d3.max( hosp )] ).range([height, 0]);
@@ -140,10 +164,31 @@
 					  .y(function(d) {return yScale(d.stav_tezky) })( data )
 				  );
 
-				//draw vyroky
+				//draw authors 
+				const authorDiv = d3.select(".authors");
+				authorDiv.selectAll("span")
+				 .data(authors)
+				 .enter()
+				 .append("span")
+				 .attr("class", d => d.class )
+				 .text( d => d.author )
+				 .on('mouseover', function (d, i) {
+					 d3.select(this).transition()
+					  .duration('50')
+					  .attr('class', d3.select(this).attr('class') + ' selected');
+					 console.log( d3.select(this).attr('class') );
+				 })
+				 .on('mouseout', function (d, i) {
+					 d3.select(this).transition()
+					  .duration('50')
+					  .attr('class', d3.select(this).attr('class').replace(' selected', ''));
+					 console.log( d3.select(this).attr('class') );
+				 });
+
+				//draw comments 
 				/*
 				const g = svg.append("g")
-				  .attr("id", "vyroky");
+				  .attr("id", "comments");
 
 				g.selectAll(".container")
 				.data( vyroky )
@@ -169,5 +214,7 @@
 		</script>
 	</head>
 	<body>
+		<div class="authors"></div>
+		<div class="chart"></div>
 	</body>
 </html>

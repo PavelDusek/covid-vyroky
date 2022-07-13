@@ -25,11 +25,14 @@ data = [
 #Put data into D3.js template
 with open("template.html") as f:
     template_html = f.read()
-with open("vyroky.json") as f:
+with open("comments.json") as f:
     j = f.read()
-vyroky = json.loads(j)
+comments = json.loads(j)
+with open("authors.json") as f:
+    j = f.read()
+authors = json.loads(j)
 
 template = jinja2.Template(template_html)
-html = template.render(data = data, vyroky = vyroky )
+html = template.render(data = data, comments = comments, authors = authors)
 with open("index.html", "w") as f:
     f.write(html)
