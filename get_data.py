@@ -32,6 +32,13 @@ with open("authors.json") as f:
     j = f.read()
 authors = json.loads(j)
 
+#convert date format
+comments = [
+        { "datum": datetime.datetime.strftime(datetime.datetime.strptime(comment["datum"], "%Y-%m-%d"), "%d.%m.%Y"),
+          "comment": comment['vyrok'],
+          "author": comment['author']
+        } for comment in comments ]
+
 template = jinja2.Template(template_html)
 html = template.render(data = data, comments = comments, authors = authors)
 with open("index.html", "w") as f:
