@@ -89,7 +89,8 @@
 			.authors span { margin: 5px; padding: 2px; border-radius: 5px; border: solid 2px gray; cursor: pointer; }
 			span.selected { border: solid 2px darkred; }
 		</style>
-		<script src="https://d3js.org/d3.v5.min.js"></script>
+		<script src="https://d3js.org/d3.v5.min.js" defer></script>
+		<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js" defer></script>
 		<script language="javascript">
 			function drawChart() {
 				const data = [
@@ -97,7 +98,7 @@
 				];
 
 				const comments = [
-					{% for comment in comments %} { "datum": "{{comment.datum}}", "comment": "{{comment.vyrok}}", "author": "{{comment.author}}" }, {% endfor %}
+					{% for comment in comments %} { "datum": "{{comment.datum}}", "comment": "{{comment.comment}}", "author": "{{comment.author}}" }, {% endfor %}
 				];
 				const authors = [
 					{% for author in authors %} { "title": "{{author.title}}", "author": "{{author.author}}", "class": "{{author.class}}" }, {% endfor %}
@@ -115,6 +116,7 @@
 				const datum  = data.map( d => d.datum );
 				const hosp   = data.map( d => d.pocet_hosp );
 				const tezky  = data.map( d => d.stavy_tezky );
+				const authorNames = authors.map( d => d.author );
 
 				const xScale  = d3.scaleBand().domain( datum ).range([0, width]).padding(0.4);
 				const yScale  = d3.scaleLinear().domain( [0, d3.max( hosp )] ).range([height, 0]);
@@ -186,30 +188,42 @@
 				 });
 
 				//draw comments 
-				/*
-				const g = svg.append("g")
-				  .attr("id", "comments");
+				const annotations = comments.map( function(d, i) {
+					var commentDatum  = d.datum;
+					var xValue        = xScale( commentDatum ); //svg x coordinate
+					var index         = datum.indexOf( commentDatum );
+					var hospValue     = hosp[index];
+					var yValue        = yScale(hospValue); //svg y coordinate
+					var commentAuthor = authors[ authorNames.indexOf(d.author) ];
+					console.log( commentAuthor['class'] );
+					return {
+						note: {
+						label: d.comment,
+						//bgPadding: 20
+						//title: "Prof. Jan Pirk, přední český kardiochirurg"
+						},
+						x: xValue,
+						y: yValue,
+						type: d3.annotationCallout,
+						connector: { end: "arrow" },
+						subject: { radius: 0 },
+						//className: commentAuthor['class'],
+						dx: 0,
+						dy: -70
+					};
+				});
 
-				g.selectAll(".container")
-				.data( vyroky )
-				.enter()
-				.append("g")
-				.attr("class", d => ("container " + d.class) )
-				.append("rect")
-				.attr("x", (d, i) => (i * 30) )
-			  	.attr("y", (d, i) => (i * 20) )
-				.attr("width", (d, i) => (d.vyrok.length * 10) )
-				.attr("height", 200);
+				const makeAnnotations = d3.annotation()
+				 .editMode(false)
+				 .annotations(annotations);
 
-				g.selectAll(".container")
-				.data( vyroky )
-				.append("text")
-				.attr("x", (d, i) => (i * 30) )
-				.attr("y", (d, i) => (i * 20) )
-				.text(d => d.vyrok);
-				*/
-
+				d3.select("svg")
+				 .append("g")
+				 .attr("transform", "translate( " + margin.left + "," + margin.top + ")")
+				 .attr("class", "annotation-group")
+				 .call(makeAnnotations);
 			}
+		
 			window.onload = function(e) { drawChart(); };
 		</script>
 	</head>
