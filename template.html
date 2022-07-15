@@ -5,80 +5,61 @@
 		<title>Výroky o covid-19 v kontextu dat.</title>
 		<style>
 			span.pirk { background: cornflowerblue; }
-			.pirk rect { fill: none; stroke-width:2; stroke: red; }
-			.pirk text { fill: red; }
+			.pirk text { fill: cornflowerblue; }
 
 			span.pekova { background: blue; }
-			.pekova rect {fill: none; stroke-width:2; stroke: red;}
-			.pekova text { fill: red; }
+			.pekova text { fill: blue; }
 
 			span.klicperova { background: coral; }
-			.klicperova rect {fill: none; stroke-width:2; stroke: red;}
-			.klicperova text { fill: red; }
+			.klicperova text { fill: coral; }
 
 			span.zaloudik { background: salmon; }
-			.zaloudik rect {fill: none; stroke-width:2; stroke: red;}
-			.zaloudik text { fill: red; }
+			.zaloudik text { fill: salmon; }
 
-			span.ludvik { background: lightgray; }
-			.ludvik rect {fill: none; stroke-width:2; stroke: red;}
-			.ludvik text { fill: red; }
+			span.ludvik { background: sienna; }
+			.ludvik text { fill: sienna; }
 
 			span.hagen { background: orchid; }
-			.hagen rect {fill: none; stroke-width:2; stroke: red;}
-			.hagen text { fill: red; }
+			.hagen text { fill: orchid; }
 
 			span.hnizdil { background: plum; }
-			.hnizdil rect {fill: none; stroke-width:2; stroke: red;}
-			.hnizdil text { fill: red; }
+			.hnizdil text { fill: plum; }
 
-			span.smucler { background: springgreen; }
-			.smucler rect {fill: none; stroke-width:2; stroke: red;}
-			.smucler text { fill: red; }
+			span.smucler { background: darkolivegreen; }
+			.smucler text { fill: darkolivegreen; }
 
-			span.pecinka { background: peachpuff; }
-			.pecinka rect {fill: none; stroke-width:2; stroke: red;}
-			.pecinka text { fill: red; }
+			span.pecinka { background: chocolate; }
+			.pecinka text { fill: chocolate; }
 
 			span.dusek { background: tomato; }
-			.dusek rect {fill: none; stroke-width:2; stroke: red;}
-			.dusek text { fill: red; }
+			.dusek text { fill: tomato; }
 
 			span.votruba { background: turquoise; }
-			.votruba rect {fill: none; stroke-width:2; stroke: red;}
-			.votruba text { fill: red; }
+			.votruba text { fill: turquoise; }
 
-			span.pollert{ background: wheat; }
-			.pollert rect {fill: none; stroke-width:2; stroke: red;}
-			.pollert text { fill: red; }
+			span.pollert{ background: salmon; }
+			.pollert text { fill: salmon; }
 
-			span.bila { background: seashell; }
-			.bila rect {fill: none; stroke-width:2; stroke: red;}
-			.bila text { fill: red; }
+			span.bila { background: violet; }
+			.bila text { fill: violet; }
 
 			span.fiala { background: slateblue; }
-			.fiala rect {fill: none; stroke-width:2; stroke: red;}
-			.fiala text { fill: red; }
+			.fiala text { fill: slateblue; }
 
-			span.babis { background: gold; }
-			.babis rect {fill: none; stroke-width:2; stroke: red;}
-			.babis text { fill: red; }
+			span.babis { background: orange; }
+			.babis text { fill: orange; }
 
 			span.balik { background: olive; }
-			.balik rect {fill: none; stroke-width:2; stroke: red;}
-			.balik text { fill: red; }
+			.balik text { fill: olive; }
 
 			span.feltl { background: indianred; }
-			.feltl rect {fill: none; stroke-width:2; stroke: red;}
-			.feltl text { fill: red; }
+			.feltl text { fill: indianred; }
 
 			span.klaus { background: dodgerblue; }
-			.klaus rect {fill: none; stroke-width:2; stroke: red;}
-			.klaus text { fill: red; }
+			.klaus text { fill: dodgerblue; }
 
-			span.csakova { background: lightgray; }
-			.csakova {fill: none; stroke-width:2; stroke: red;}
-			.csakova text { fill: red; }
+			span.csakova { background: darkcyan; }
+			.csakova text { fill: darkcyan; }
 
 			.hospitalizace { stroke: steelblue; fill: none; stroke-width: 3; }
 			.tezky_stav { stroke: orange; fill: none; stroke-width: 3; }
@@ -88,13 +69,15 @@
 			.authors { display: flex; flex-wrap: wrap; background: beige; }
 			.authors span { margin: 5px; padding: 2px; border-radius: 5px; border: solid 2px gray; cursor: pointer; }
 			span.selected { border: solid 2px darkred; }
+
+			svg { margin: 5px; }
 		</style>
 		<script src="https://d3js.org/d3.v5.min.js" defer></script>
 		<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js" defer></script>
 		<script language="javascript">
 			function drawChart() {
 				const data = [
-					{% for day in data %} { "datum": "{{day.datum}}", "pocet_hosp": "{{day.pocet_hosp}}", "stav_tezky": "{{day.stav_tezky}}" }, {% endfor %}
+					{% for day in data %} { "datum": "{{day.datum}}", "pocet_hosp": {{day.pocet_hosp}}, "stav_tezky": {{day.stav_tezky}} }, {% endfor %}
 				];
 
 				const comments = [
@@ -103,9 +86,9 @@
 				const authors = [
 					{% for author in authors %} { "title": "{{author.title}}", "author": "{{author.author}}", "class": "{{author.class}}" }, {% endfor %}
 				];
-				var margin = {top: 10, right: 30, bottom: 50, left: 60},
-				    width  = 0.9 * screen.width - margin.left - margin.right,
-				    height = 0.7 * screen.height - margin.top  - margin.bottom;
+				const margin = {top: 50, right: 30, bottom: 50, left: 60},
+				      width  = 0.9 * screen.width - margin.left - margin.right,
+				      height = 0.75 * screen.height - margin.top  - margin.bottom;
 
 				const svg = d3.select(".chart")
 					.append("svg")
@@ -117,6 +100,7 @@
 				const hosp   = data.map( d => d.pocet_hosp );
 				const tezky  = data.map( d => d.stavy_tezky );
 				const authorNames = authors.map( d => d.author );
+				const classes = authors.map( d => d.class );
 
 				const xScale  = d3.scaleBand().domain( datum ).range([0, width]).padding(0.4);
 				const yScale  = d3.scaleLinear().domain( [0, d3.max( hosp )] ).range([height, 0]);
@@ -125,7 +109,6 @@
 				svg.append("g")
 				  .attr("class", "xaxis")
 				  .attr( "transform", "translate(0, " + height + ")" )
-				  //.call( d3.axisBottom(xScale).ticks(10) )
 				  .call( d3.axisBottom(xScale).ticks(10) )
 				  .selectAll(".tick")
 				  .attr("display", function(d) {
@@ -146,7 +129,7 @@
 				//y Axis
 				svg.append("g")
 				  .attr("class", "yaxis")
-				  .call(d3.axisLeft(yScale).tickFormat( d => d ).ticks(15));
+				  .call(d3.axisLeft(yScale).tickFormat( d => d ).ticks(30));
 
 				//draw hospitalizace 
 				svg.append("path")
@@ -174,18 +157,32 @@
 				 .append("span")
 				 .attr("class", d => d.class )
 				 .text( d => d.author )
-				 .on('mouseover', function (d, i) {
+				 .on('click', function (d, i) {
+					 classes.forEach( function(c) {
+						 //turn the previous selected author off:
+						 d3.selectAll(".selected." + c).transition().duration('50').attr('class', c);
+
+						//turn all the comments off:
+						d3.selectAll(".annotation." + c).style("display", "none");
+					 });
+
+					 //turn this author on:
 					 d3.select(this).transition()
 					  .duration('50')
 					  .attr('class', d3.select(this).attr('class') + ' selected');
-					 console.log( d3.select(this).attr('class') );
-				 })
+
+					 //turn his comments on:
+					 var author = authors[ authorNames.indexOf(d.author) ];
+					 d3.select(".title").text(author['title']);
+					 d3.selectAll(".annotation." + author['class']).style("display", "block");
+				 });
+				/*
 				 .on('mouseout', function (d, i) {
 					 d3.select(this).transition()
 					  .duration('50')
 					  .attr('class', d3.select(this).attr('class').replace(' selected', ''));
-					 console.log( d3.select(this).attr('class') );
 				 });
+				 */
 
 				//draw comments 
 				const annotations = comments.map( function(d, i) {
@@ -195,21 +192,27 @@
 					var hospValue     = hosp[index];
 					var yValue        = yScale(hospValue); //svg y coordinate
 					var commentAuthor = authors[ authorNames.indexOf(d.author) ];
-					console.log( commentAuthor['class'] );
+					var commentDx     = 50;
+					var commentDy     = -70;
+					if (xValue > 0.5 * width ) {
+						//comment is in the right part of plot, make it toward left
+						commentDx *= -1;
+					}
+					if (yValue < 0.5 * height) {
+						//comment is in the upper part of plot, make it downward
+						commentDy *= -1;
+					}
 					return {
-						note: {
-						label: d.comment,
-						//bgPadding: 20
-						//title: "Prof. Jan Pirk, přední český kardiochirurg"
-						},
+						note: { label: d.comment },
 						x: xValue,
 						y: yValue,
+						//type: d3.annotationCalloutElbow,
 						type: d3.annotationCallout,
 						connector: { end: "arrow" },
 						subject: { radius: 0 },
-						//className: commentAuthor['class'],
-						dx: 0,
-						dy: -70
+						className: commentAuthor['class'],
+						dx: commentDx,
+						dy: commentDy 
 					};
 				});
 
@@ -229,6 +232,7 @@
 	</head>
 	<body>
 		<div class="authors"></div>
+		<div class="title">&nbsp;</div>
 		<div class="chart"></div>
 	</body>
 </html>
